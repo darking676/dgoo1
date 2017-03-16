@@ -19,4 +19,8 @@
 <img src='img/img3.png' /><p/>
 
 ### \#상품분류 페이지<br />
-<img src=''
+<img src='img/productlist.png' /><p/>
+\#이부분은 크게 썸네일, 필터가 있는데 필터를 누를때마다 쿼리를 날려 해당 분류에 맞는 제품을 보여주고 
+  &nbsp;썸네일 부분은 이미지를 누르면 상세보기, 마우스를 over하면 이미지 중간부분에 카트에 add할수있는 버튼기능을 붙였다. <br />
+  기능구현에 들어간 기술은 HTML, javascript, jQUERY, Bootstrap이다.
+
