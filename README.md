@@ -1,1 +1,3 @@
-# dgoo <img src='KakaoTalk_20170210_002337578.jpg' />
+# dgoo <img src='img/img1.jpg' />
+<img src='img/img2.jpg' />
+<img src='img/img3.jpg' />
