@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+     <insert id="insertUser" parameterType="com.acorn.unicorn.bean.UserBean">
+        insert into users(u_userid, u_password, u_name, u_jumin, u_phone, u_address, u_mail, u_gender, u_zipcode) values(#{u_userid}, #{u_password}, #{u_name}, #{u_jumin}, #{u_phone}, #{u_address}, #{u_mail}, #{u_gender}, #{u_zipcode})
+	</insert>
+	
+	<select id="configUser" parameterType="com.acorn.unicorn.bean.UserBean" resultType="com.acorn.unicorn.dto.UserDTO">
+		select u_userid, u_password from users where u_userid =#{u_userid} and u_password =#{u_password}
+	</select> 
+</mapper>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+
+	<!-- ===================================================================================== -->
+	<!-- 						adminpage(	baord, users, delivery ) count					 -->									
+	<!-- ===================================================================================== -->
+ 	
+ 	<select id="newboardcount" resultType="int">
+		select count(*) from tb_board where b_state = 'N' and b_crea_date > date_format(curdate( ), '%Y-%m-%d %H:%i:%s' ) 
+	</select>
+ 	
+ 	<select id="configCoupon" resultType="String" parameterType="com.acorn.unicorn.bean.CouponBean">
+		select ifnull(max(c_bun), concat(#{c_discount},'00001')) from coupon where c_discount = #{c_discount} order by c_num desc
+	</select>
+
+	<select id="newusercount" resultType="int">
+		select count(*) from users where u_crea_date > date_format(curdate( ), '%Y-%m-%d %H:%i:%s' ) 
+	</select>
+
+	<select id="newordercount" resultType="int">
+		select count(*) from delivery where d_crea_date > date_format(curdate( ), '%Y-%m-%d %H:%i:%s' )
+	</select>
+	
+   <select id="newcomentcount" resultType="int">
+      select count(*) from review where rv_state = 'N' and rv_regdate > date_format(curdate( ), '%Y-%m-%d %H:%i:%s' ) and rv_state = 'N'
+      and rv_userid != 'Admin'
+   </select>
+   
+ 	<!-- ===================================================================================== -->	
+	<!-- 									delivery query			   					 	   -->
+	<!-- ===================================================================================== -->
+	
+	<select id="admindeliverylist" resultType="com.acorn.unicorn.dto.DeliveryDTO" parameterType="int">
+		select * from delivery where d_crea_Date > date_format(curdate( ), '%Y-%m-%d %H:%i:%s' ) limit ${value}, 10
+	</select>
+	
+	<update id="deliverystate" parameterType="com.acorn.unicorn.bean.AdminBean">
+		update delivery set d_yn = #{d_yn} where d_num = #{d_num} 
+	</update>
+	
+	<!-- ===================================================================================== -->
+	<!-- 									board query			   					 	   -->
+	<!-- ===================================================================================== -->
+	
+	<select id="adminboardlist" resultType="com.acorn.unicorn.dto.BoardDTO" parameterType="int">
+		select b_id, b_title, b_userid, b_crea_date, b_state from tb_board where b_crea_date > date_format(curdate( ), '%Y-%m-%d %H:%i:%s' ) and b_state = 'N' limit ${value}, 10
+	</select>
+	
+	<!-- ===================================================================================== -->
+	<!-- 									user query			   					 	   -->
+	<!-- ===================================================================================== -->
+	<select id="adminuserlist" resultType="com.acorn.unicorn.dto.UserDTO" parameterType="int">
+		select * from users where u_crea_Date > date_format(curdate( ), '%Y-%m-%d %H:%i:%s' ) limit ${value}, 10
+	</select>
+	
+	 <!-- ===================================================================================== -->
+	   <!--                            coment query                                  -->
+	   <!-- ===================================================================================== -->
+   
+   <select id="admincomentlist" resultType="com.acorn.unicorn.dto.ReviewDTO" parameterType="int">
+      select * from review where rv_regdate > date_format(curdate( ), '%Y-%m-%d %H:%i:%s' ) and rv_state = 'N' 
+      and rv_userid != 'Admin' limit ${value}, 10
+   </select>
+   
+	<!-- ===================================================================================== -->
+	<!--                            side order query                                  -->
+	<!-- ===================================================================================== -->
+	<select id="deliverylist" resultType="com.acorn.unicorn.dto.DeliveryDTO" parameterType="int">
+		select * from  delivery limit ${value}, 10
+	</select>
+	
+	<select id = "deliverycount" resultType="int">
+		select count(*) from delivery  
+	</select>
+   
+	<!-- ===================================================================================== -->
+	<!--                            side Q&A query                                  -->
+	<!-- ===================================================================================== -->
+	<select id="boardlist" resultType="com.acorn.unicorn.dto.BoardDTO" parameterType="int">
+		select * from tb_board order by b_state limit ${value}, 10
+	</select>
+	
+	<select id = "boardcount" resultType="int">
+		select count(*) from tb_board
+	</select>
+   
+	<!-- ===================================================================================== -->
+	<!--                            side User query                                  -->
+	<!-- ===================================================================================== -->
+	<select id="userlist" resultType="com.acorn.unicorn.dto.UserDTO" parameterType="int">
+		select * from users limit ${value}, 10
+	</select>
+	
+	<select id = "usercount" resultType="int">
+		select count(*) from users
+	</select>
+	
+	<!-- ===================================================================================== -->
+	<!--                            admin board reply query                                  -->
+	<!-- ===================================================================================== -->
+   	<select id="newboardreply" resultType="com.acorn.unicorn.dto.BoardDTO" parameterType="int">
+   		select * from tb_board where b_id = #{b_id}
+   	</select>
+   	
+   	<update id="boardstateup" parameterType="int">
+   		update tb_board set b_state = 'Y' where b_id = #{b_id}
+   	</update>
+   	
+   	<insert id="boardreplyins" parameterType="com.acorn.unicorn.bean.BoardreplyBean">
+   		insert into board_reply(rp_bid, rp_userid, rp_content) values(#{rp_bid}, #{rp_userid}, #{rp_content})
+   	</insert>
+   	
+   	<!-- ===================================================================================== -->
+	<!--                            admin board reply query                                  -->
+	<!-- ===================================================================================== -->
+   	
+   	<select id="commentreply" resultType="com.acorn.unicorn.dto.ReviewDTO" parameterType="int">
+   		select rv_pid, rv_index, p_name, rv_content, rv_userid, rv_regdate from review left join products on rv_pid = p_id where rv_index = #{rv_index}
+   	</select>
+   	
+   	<update id="commentstateup" parameterType="com.acorn.unicorn.bean.ReviewBean">
+   		update review set rv_state = 'Y' where rv_index = #{rv_index}
+   	</update>
+   	
+   	<insert id="commentreplyins" parameterType="com.acorn.unicorn.bean.ReviewBean">
+   		insert into review(rv_content, rv_pid, rv_userid, rv_gnum, rv_lvl) values(#{rv_content}, #{rv_pid}, #{rv_userid}, #{rv_gnum}, #{rv_lvl})
+   	</insert>
+   	
+   	<!-- ===================================================================================== -->
+	<!--                            purchases chart			                                  -->
+	<!-- ===================================================================================== -->
+	<select id="monthpurchases" resultType="com.acorn.unicorn.dto.ChartDTO">
+		select sum(pur_price) as total_price from purchases group by substr(pur_created, 1, 7)
+	</select>
+	
+	<select id="daypurchases" resultType="int">
+		select ifnull(sum(pur_price), 0) as total_price from purchases where pur_created > date_format(curdate( ), '%Y-%m-%d %H:%i:%s' )
+	</select>
+	
+	<select id="categorypurchases" resultType="com.acorn.unicorn.dto.ChartDTO">
+		select p_category, ifnull(sum(pur_cnt), 0) as pur_cnt from purchases left join products on p_id = pur_p_id group by p_category order by sum(pur_cnt) desc limit 0, 5
+	</select>
+	
+	<select id="productpurchases" resultType="com.acorn.unicorn.dto.ChartDTO">
+		select p_name, ifnull(sum(pur_cnt), 0) as product5 from purchases left join products on p_id = pur_p_id group by pur_p_id order by sum(pur_cnt) desc limit 0,5
+	</select>
+	
+	   	<insert id="insertCoupon" parameterType="com.acorn.unicorn.bean.CouponBean">
+   		insert into coupon(c_discount, c_bun, c_userid) values(#{c_discount}, #{c_bun}, #{c_userid})
+   	</insert>
+	
+	
+</mapper>

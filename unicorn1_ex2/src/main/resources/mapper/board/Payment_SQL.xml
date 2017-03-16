@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="payment">
+     <select id="selectPaymentList"  parameterType="com.acorn.unicorn.bean.BasketBean" resultType="com.acorn.unicorn.dto.BasketDTO">
+        select wish_userid, wish_p_id, wish_number, p_id, p_name, p_price, p_stock, p_img from wishlist left join products on wish_p_id=p_id where wish_p_id in (${wish_p_id}) and wish_userid=#{wish_userid}
+	</select>
+     
+     <select id="configGnum" resultType="int">
+        select ifnull(max(pur_gnum), 0) from purchases
+	</select>
+     
+     <select id="selectInvoice"  parameterType="com.acorn.unicorn.bean.PurchasesBean" resultType="com.acorn.unicorn.dto.PurchasesDTO">
+        select *,(select u_name from users where u_userid=#{pur_userid}) as u_name,(select u_phone from users where u_userid=#{pur_userid}) as u_phone,(select u_mail from users where u_userid=#{pur_userid}) as u_mail,(select u_address from users where u_userid=#{pur_userid}) as u_address from purchases join delivery on pur_num=d_num where pur_userid = #{pur_userid} and pur_created =#{pur_created}
+	</select>
+     
+     <select id="configWish"  parameterType="com.acorn.unicorn.bean.UserBean" resultType="com.acorn.unicorn.dto.BasketDTO">
+        select wish_userid, wish_p_id, wish_number, wish_size from wishlist where wish_userid =#{u_userid}
+	</select>
+	
+	<update id="productSub" parameterType="com.acorn.unicorn.bean.PurchasesBean">
+		update products_option set po_stock = po_stock - ${pur_cnt} where po_p_id = ${pur_p_id} and po_size = #{pur_po_size}
+	</update>
+	
+	<update id="updatePoint" parameterType="com.acorn.unicorn.bean.UserBean">
+		update users set u_point = u_point + -#{u_point} where u_userid = #{u_userid} 
+	</update>
+	
+	<update id="updateCart" parameterType="com.acorn.unicorn.bean.CartBean">
+		update wishlist set wish_size = #{wish_size} where wish_userid = #{wish_userid} and wish_p_id = ${wish_p_id} and wish_size = #{past_size}
+	</update>
+	
+	<update id="updateCoupon" parameterType="com.acorn.unicorn.bean.CouponBean">
+		update coupon set c_gb = 'y' where c_userid = #{c_userid} and c_bun = #{c_bun} 
+	</update>
+	
+	<delete id="cartEmpty" parameterType="com.acorn.unicorn.bean.PurchasesBean">
+		delete from wishlist where wish_userid = #{pur_userid} and wish_p_id = ${pur_p_id} and wish_size = #{pur_po_size}
+	</delete>
+	
+	<insert id="insertPurchase" parameterType="com.acorn.unicorn.bean.PurchasesBean">
+		insert into purchases(pur_userid, pur_address, pur_c_bun, pur_point, pur_cnt, pur_price, pur_p_id, pur_po_size, pur_gnum, pur_created) values(#{pur_userid}, #{pur_address}, #{pur_c_bun}, #{pur_point}, ${pur_cnt}, ${pur_price}, ${pur_p_id}, #{pur_po_size} , #{pur_gnum}, #{pur_created}) 
+	</insert>
+	
+	<insert id="insertDelivery" parameterType="com.acorn.unicorn.bean.DeliveryBean">
+		insert into delivery(d_name, d_user_name,d_phone, d_address, d_memo, d_userid) values(#{d_name}, #{d_user_name}, #{d_phone}, #{d_address}, #{d_memo}, #{d_userid}) 
+	</insert>
+	
+	<select id="stockConfig" parameterType="com.acorn.unicorn.bean.PurchasesBean" resultType="com.acorn.unicorn.dto.ProductOptionDTO">
+		<![CDATA[
+		select * from products_option where po_p_id = ${pur_p_id} and po_size = #{pur_po_size}
+		]]> 
+	</select>
+
+</mapper>

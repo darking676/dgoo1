@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="my">
+	<select id="myselect" parameterType="String" resultType="com.acorn.unicorn.dto.MyDTO">
+		<!-- select pur_p_id, p_name, p_img, p_price, pur_gnum, pur_created from purchases left join products on pur_p_id = products.p_id where pur_userid = #{param1}; -->
+		select pur_p_id, p_name, p_img, p_price,pur_cnt, pur_gnum, pur_created,d_yn from purchases join delivery on pur_num=d_num left join products on purchases.pur_p_id = products.p_id where pur_userid=#{param1};
+	</select>
+	<select id="myselectDistinct" parameterType="String" resultType="com.acorn.unicorn.dto.MyDTO">
+		SELECT distinct pur_gnum, pur_c_bun, pur_created, (SELECT c_discount FROM coupon where purchases.pur_c_bun = coupon.c_bun) as pur_c_discount, pur_point FROM purchases where pur_userid=#{param1};
+	</select>
+	<select id="myModal" parameterType="String" resultType="com.acorn.unicorn.dto.MyDTO">
+		select pur_p_id, p_name, p_img, p_price, pur_gnum, pur_created,d_yn,pur_point,(SELECT c_discount FROM coupon where purchases.pur_c_bun = coupon.c_bun) as pur_c_discount,pur_po_size,pur_cnt from purchases join delivery on pur_num=d_num left join products on purchases.pur_p_id = products.p_id where pur_gnum=#{param1};
+	</select>
+	<select id="myinfo" parameterType="String" resultType="com.acorn.unicorn.dto.UserDTO">
+		select *, (select count(*) from coupon where u_userid = c_userid and c_gb = 'n') as u_coupon_count from users where u_userid = #{u_userid};
+	</select>
+	<update id="updateMyInfo" parameterType="com.acorn.unicorn.bean.UserBean">
+	 update users
+	 <set>
+	 	 <if test="u_name != 'NoneV'">
+		 u_name = #{u_name},
+		 </if>
+		 <if test="u_phone != 'NoneV'">
+		 u_phone = #{u_phone},
+		 </if>
+		 <if test="u_address != 'NoneV'">
+		 u_address = #{u_address},
+		 </if>
+		 <if test="u_mail != 'NoneV'">
+		 u_mail = #{u_mail},
+		 </if>
+	 </set>
+	 where u_userid = #{u_userid}
+	</update>
+	<select id="selectCoupon" parameterType="String" resultType="com.acorn.unicorn.dto.CouponDTO">
+		select c_discount, c_bun from coupon where c_gb ='n' and c_userid = #{u_userid};
+	</select>
+	<update id="updatePassword" parameterType="com.acorn.unicorn.bean.UserBean">
+		update users set u_password = #{u_password} where u_userid = #{u_userid}
+	</update>
+</mapper>

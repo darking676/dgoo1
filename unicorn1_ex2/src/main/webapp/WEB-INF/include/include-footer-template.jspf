@@ -1,0 +1,88 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<!--=== Footer v4 ===-->
+	<div class="footer-v4">
+		<div class="footer">
+			<div class="container col-md-12">
+				<div class="row">
+					<!-- About -->
+					<div class="col-md-2"></div>
+					<div class="col-md-5 md-margin-bottom-40">
+						<a href="home.do"><img class="footer-logo"
+							src="assets/img/logo.png" alt=""></a>
+						<p>아디다스코리아(주)</p> 
+						<p>교환 및 반품 문의 (본사로 반품불가) : 온라인스토어 고객센터 1588-8241 (평일 09:00 ~ 18:00, 점심시간 : 12:00 ~ 13:00)<p>
+						<p>제품 수선문의 : 아디다스 고객만족센터 080-022-7981 (평일 : 09:00 ~ 18:00)</p> 
+						<p>통신판매업신고 : 2007-서울서초-10391     개인정보 관리책임자 : 김동일  ,  개인정보 관리담당자 : 황선영</p> 
+						<p>Copyright ©2011 adidas Korea Inc.</p> 
+						<br>
+					</div>
+					<div class="col-md-5">
+						<br><br><br><br>
+						<ul class="list-unstyled address-list margin-bottom-20">
+							<li><i class="fa fa-angle-right"></i>06620 서울특별시 서초구 서초대로 74길 4, 삼성생명 서초타워 23층</li>
+							<li><i class="fa fa-angle-right"></i>대표이사 : 에드워드 닉슨 </li>
+							<li><i class="fa fa-angle-right"></i>사업자 등록번호 : 214-81-07412</li>
+							<li><i class="fa fa-angle-right"></i>이메일 : adiCLUB_Korea@adidas.com</li>
+						</ul>	
+					</div>
+					<!-- End About -->
+				</div>
+				<!--/end row-->
+			</div>
+			<!--/end continer-->
+		</div>
+		<!--/footer-->
+
+		<div class="copyright">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<p>
+							2014 &copy; Unify. ALL Rights Reserved. <a target="_blank"
+								href="https://twitter.com/htmlstream">Htmlstream</a> | <a
+								href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<ul class="list-inline sponsors-icons pull-right">
+							<li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
+							<li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
+							<li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
+							<li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/copyright-->
+	</div>
+	<!--=== End Footer v4 ===-->
+
+	<!-- JS Customization -->
+	<script src="assets/js/custom.js"></script>
+
+	<!-- <script>
+    jQuery(document).ready(function() {
+        App.init();
+        App.initScrollBar();        
+        MouseWheel.initMouseWheel();
+    });
+</script> -->
+	<!--[if lt IE 9]>
+    <script src="assets/plugins/respond.js"></script>
+    <script src="assets/plugins/html5shiv.js"></script>
+    <script src="assets/js/plugins/placeholder-IE-fixes.js"></script>    
+<![endif]-->
+	<!--[if lt IE 10]>
+    <script src="assets/plugins/sky-forms-pro/skyforms/js/jquery.placeholder.min.js"></script>
+<![endif]-->
+</body>
+</html>

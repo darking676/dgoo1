@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cart">
+     <insert id="insertCart" parameterType="com.acorn.unicorn.bean.CartBean">
+        insert into wishlist(wish_userid, wish_p_id, wish_number, wish_size) values(#{wish_userid}, #{wish_p_id}, ${wish_number}, #{wish_size})
+	</insert>
+     
+     <select id="selectCartList"  parameterType="String" resultType="com.acorn.unicorn.dto.BasketDTO">
+        select wish_userid, wish_num as w_id, wish_p_id, wish_number, ifnull(wish_size, 'X') as wish_size,p_name, p_price, p_img, p_category, p_sort from wishlist left join products on wish_p_id=p_id where wish_userid=#{param1}
+	</select>
+     
+     <select id="selectPaymentList"  parameterType="com.acorn.unicorn.dto.BasketDTO" resultType="com.acorn.unicorn.dto.BasketDTO">
+        select wish_userid, wish_num as w_id, p_id, wish_number, p_name, p_price, p_img from wishlist left join products on wish_p_id=p_id where wish_userid=#{param1}
+	</select>
+	
+	<select id="configProduct" parameterType="com.acorn.unicorn.bean.CartBean" resultType="com.acorn.unicorn.dto.CartDTO">
+		select wish_p_id from wishlist where wish_p_id = #{wish_p_id} and wish_size = #{wish_size} and wish_userid = #{wish_userid}
+	</select>
+	
+	<select id="configOption" parameterType="com.acorn.unicorn.bean.CartBean" resultType="com.acorn.unicorn.dto.ProductOptionDTO">
+		select po_stock, po_p_id,po_size from products join products_option on p_id=po_p_id where po_p_id in (${wish_p_id})
+	</select>
+	
+	<select id="configCoupon" parameterType="String" resultType="com.acorn.unicorn.dto.CouponDTO">
+		select c_bun, c_gb, c_discount from coupon where c_userid = #{param1} and c_gb = 'n'
+	</select>
+	
+	<select id="configPoint" parameterType="String" resultType="com.acorn.unicorn.dto.UserDTO">
+		select u_userid, u_point from users where u_userid = #{param1}
+	</select>
+	
+	<update id="updateCart" parameterType="com.acorn.unicorn.bean.CartBean">
+		update wishlist set wish_number = ${wish_number}, wish_size = #{wish_size} where wish_userid = #{wish_userid} and wish_p_id = #{wish_p_id} 
+	</update>
+	
+	<delete id="deleteCart" parameterType="com.acorn.unicorn.bean.CartBean">
+		delete from wishlist where wish_userid = #{wish_userid} and wish_p_id = #{wish_p_id} and wish_size = #{wish_size}
+	</delete>
+
+</mapper>

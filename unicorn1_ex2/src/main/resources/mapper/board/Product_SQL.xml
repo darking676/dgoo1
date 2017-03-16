@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="product">
+	<select id="selectProductList" parameterType="com.acorn.unicorn.bean.ProductBean" resultType="com.acorn.unicorn.dto.ProductDTO" >
+       select p_id, p_name, p_price, p_img, p_sex, p_category, p_sort, 
+       ifnull((select sum(rv_rate)/count(rv_rate) from review where rv_pid = p_id and rv_userid != 'admin'),0) as rate from products 
+       left join review on rv_pid = p_id where p_sex in (${p_sex})
+         <if test="p_sort != null and p_sort != ''">
+             AND p_sort = '${p_sort}'
+         </if>
+         <if test="p_category != null and p_category != ''">
+            AND p_category = '${p_category}'
+         </if>
+         <if test="startPrice != 0 and endPrice != 0">
+            <![CDATA[ AND ${startPrice} < p_price AND p_price < ${endPrice}]]>
+         </if>
+         <if test="p_name != null and p_name != ''">
+            and p_name like #{p_name}
+         </if>
+         group by p_id order by p_id asc
+    </select>
+    
+    <select id="selectProductDetail" parameterType="int" resultType="com.acorn.unicorn.dto.ProductDTO">
+       select * from products where p_id = #{param1} 
+    </select>
+    
+    <select id="selectProductDetail_S" parameterType="int" resultType="com.acorn.unicorn.dto.ProductDTO">
+       select po_size, po_stock from products_option where po_p_id= #{param1} 
+    </select>
+    
+    <select id="bestseller" resultType="com.acorn.unicorn.dto.BestSellerDTO">
+       select p_id, p_name, p_price, p_img, p_category, p_sex, p_sort, pur_cnt,ifnull((select sum(rv_rate)/count(rv_rate) from review where rv_pid = p_id and rv_userid != 'admin'),0) as rate from products
+		left join purchases on pur_p_id = p_id left join review on rv_pid=p_id order by pur_cnt desc limit 1, 6;
+    </select>
+    
+    <select id="search" parameterType="com.acorn.unicorn.bean.ProductBean" resultType="com.acorn.unicorn.dto.ProductDTO" >
+         select * from products where p_sex in (${p_sex}) and p_name like #{p_name} order by p_id desc
+    </select>
+</mapper>

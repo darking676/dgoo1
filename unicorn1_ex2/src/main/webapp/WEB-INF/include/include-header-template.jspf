@@ -1,0 +1,428 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Web Fonts -->
+    <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
+
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/shop.style.css">
+
+    <!-- CSS Header and Footer -->
+    <link rel="stylesheet" href="assets/css/headers/header-v5.css">
+    <link rel="stylesheet" href="assets/css/footers/footer-v4.css">
+
+    <!-- CSS Customization -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+
+   <!-- jQuery -->
+   <script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
+
+<title>아디다스 공식 온라인 쇼핑몰</title>
+</head>
+<script type="text/javascript">
+
+function adminpage(){
+   location.href = "admin.do?guestcount="+$("#guestcount").val();
+}
+</script>
+<body>
+    <!--=== Header v5 ===-->   
+    <div class="header-v5 header-static">
+        <!-- Topbar v3 -->
+        <div class="topbar-v3">
+            <div class="search-open">
+                <div class="container">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <div class="search-close"><i class="icon-close"></i></div>
+                </div>    
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- Topbar Navigation -->
+                        <ul class="left-topbar">
+                            <li>
+                                <a>Currency (KRW)</a>
+                            </li>
+                            <li>
+                                <a>Language (KOR)</a>
+                            </li>   
+                        </ul><!--/end left-topbar-->
+                            <input type="hidden" id="wish" value="${configW }">  
+                    </div>
+                    <div class="col-sm-6">
+                        <ul class="list-inline right-topbar pull-right">
+                            <li>
+                            <c:choose>
+	                            <c:when test="${userid == 'Admin'}">
+									<a href = "#" onclick = "adminpage()">adminpage</a>
+									<input type = "hidden" id = "guestcount">
+	                            </c:when>
+	                            <c:when test="${userid != 'admin'}">
+		                            <a href="my_info.do">Account</a>
+	                            </c:when>
+	                         </c:choose>
+	                         </li>
+                            <li><a href="wishlist.do" id="wishlist"></a></li>
+                            <li>
+                               <c:choose>
+                                  <c:when test="${userid == null}">
+                                     <a href="Login.do">Login</a> | 
+                                     <a href="join.do">Register</a>
+                                  </c:when>
+                                  <c:otherwise>
+                                     <a href="logincheck.do">Logout</a>
+                                  </c:otherwise>
+                               </c:choose>
+                            </li>
+                            <li><i class="search fa fa-search search-button"></i></li>
+                        </ul>
+                    </div>
+                </div>
+            </div><!--/container-->
+        </div>
+        <!-- End Topbar v3 -->
+
+        <!-- Navbar -->
+        <div class="navbar navbar-default mega-menu" role="navigation">
+            <div class="container">	
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="home.do">
+                        <img id="logo-header" src="assets/img/logo.png" alt="Logo">
+                    </a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-responsive-collapse">
+                    <!-- Shopping Cart -->
+                    <ul class="list-inline shop-badge badge-lists badge-icons pull-right">
+                        <li>
+                            <a href="#"><i class="fa fa-shopping-cart"></i></a>
+                            <span class="badge badge-sea rounded-x">0</span>
+                            <ul class="list-unstyled badge-open mCustomScrollbar" data-mcs-theme="minimal-dark">
+                                <c:set var="no" value="0"/>
+                                <c:set var="subtotal" value="0"/>
+                               <c:set var="CartSize" value="0"/>
+                               <c:set var="usercart" value="${userid}cart"/>
+                                <c:forEach var="cart" items="${sessionScope[usercart]}">
+                                      <c:set var="CartSize" value="${CartSize + 1 }"/>
+                                      <c:set var="subtotal" value="${subtotal + (cart.p_price*cart.p_number) }"/>
+                                      <li>
+                                         <input type="hidden" id="p_id${no }" value="${cart.p_id }">
+                                         <input type="hidden" id="p_id" value="${cart.p_id }">
+                                         <input type="hidden" id="wish_userid" value="${userid }">
+                                         <input type="hidden" id="wish_number${no }" value="${cart.p_number}">
+                                         <input type="hidden" id="p_sex" value="${cart.p_sex }">
+                                         <input type="hidden" id="p_price${no }" value="${cart.p_price }">
+                                         <input type="hidden" id="po_size${no }" value="${cart.po_size }">
+                                         <input type="hidden" id="po_size" value="${cart.po_size }">
+                                          <img src="${cart.p_img}" alt="">
+                                          <button type="button" class="close c1">×</button>
+                                          <div class="overflow-h">
+                                              <span>${cart.p_name}</span>
+                                              <small>${cart.p_number} x ${cart.p_price }</small>
+                                              <c:if test="${cart.po_size != 'X'}">
+                                              	<small>${cart.po_size }</small>
+                                              </c:if>
+                                          </div>    
+                                      </li>
+                                      <c:set var="no" value="${no + 1 }" />
+                                </c:forEach>
+                                <input type="hidden" id="HiddenCartSize" value="${CartSize}"> 
+                                <li class="subtotal">
+                                    <div class="overflow-h margin-bottom-10">
+                                        <span>Subtotal</span>
+                                        <span class="pull-right subtotal-cost">${subtotal}</span>
+                                    </div>
+                                    <div class="row">    
+                                        <div class="col-xs-6">
+                                            <a href="shop-ui-inner.html" class="btn-u btn-brd btn-brd-hover btn-u-sea-shop btn-block">View Cart</a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a href="#this" class="btn-u btn-u-sea-shop btn-block" id="checkout">Checkout</a>
+                                        </div>
+                                    </div>        
+                                </li>    
+                            </ul>
+                        </li>
+                    </ul>
+                    <!-- End Shopping Cart -->
+
+                    <!-- Nav Menu -->
+                    <ul class="nav navbar-nav">
+                        <!-- MENS -->
+                        <c:if test="${param.list == 1 }">   <!-- param 1일때 dropdown 활성 -->
+                        <li class="dropdown mega-menu-fullwidth" id="MEN">
+                        </c:if>
+                        <c:if test="${param.list != 1 }">   <!-- param 1이 아닐때 dropdown 비활성 -->
+                        <li class="dropdown mega-menu-fullwidth" id="MEN">
+                        </c:if>
+                            <a href="#this" class="dropdown-toggle" data-hover="dropdown" id="MEN">
+                                MEN
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="mega-menu-content">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h3 class="mega-menu-heading">SHOES</h3>
+                                                    <ul class="list-unstyled style-list">
+                                                  <li id="오리지널스"><a href="productlist.do?p_sort=신발&p_category=오리지널스&p_sex=0, 1">오리지널스</a></li>
+                                                  <li id="러닝"><a href="productlist.do?p_sort=신발&p_category=러닝&p_sex=0, 1">러닝</a></li>
+                                                  <li id="농구"><a href="productlist.do?p_sort=신발&p_category=농구&p_sex=0, 1">농구</a></li>
+                                                  <li id="아웃도어"><a href="productlist.do?p_sort=신발&p_category=아웃도어&p_sex=0, 1">아웃도어</a></li>
+                                                  <li id="축구"><a href="productlist.do?p_sort=신발&p_category=축구&p_sex=0, 1">축구</a></li>
+                                                  <li id="네오"><a href="productlist.do?p_sort=신발&p_category=네오&p_sex=0, 1">네오</a></li>
+                                                  <li id="테니스"><a href="productlist.do?p_sort=신발&p_category=테니스&p_sex=0, 1">테니스</a></li>
+                                                  <li id="트레이닝"><a href="productlist.do?p_sort=신발&p_category=트레이닝&p_sex=0, 1">트레이닝</a></li>
+                                                  <li id="야구"><a href="productlist.do?p_sort=신발&p_category=야구&p_sex=0, 1">야구</a></li>
+                                                  <li id="스웜"><a href="productlist.do?p_sort=신발&p_category=스윔&p_sex=0, 1">스웜</a></li>   
+                                                    </ul>                                                   
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h3 class="mega-menu-heading">CLOTHES</h3>
+                                                    <ul class="list-unstyled style-list">
+                                                        <li id="윈터자켓"><a href="productlist.do?p_sort=의류&p_category=윈터자켓&p_sex=0, 1">윈터자켓</a></li>
+                                                        <li id="자켓"><a href="productlist.do?p_sort=의류&p_category=자켓&p_sex=0, 1">자켓</a></li>
+                                                        <li id="트랙탑/져지탑"><a href="productlist.do?p_sort=의류&p_category=트랙탑/져지탑&p_sex=0, 1">트랙탑/져지탑</a></li>
+                                                        <li id="긴팔티"><a href="productlist.do?p_sort=의류&p_category=긴팔티&p_sex=0, 1">긴팔티</a></li>
+                                                        <li id="반팔티"><a href="productlist.do?p_sort=의류&p_category=반팔티&p_sex=0, 1">반팔티</a></li>
+                                                        <li id="슬리브리스"><a href="productlist.do?p_sort=의류&p_category=슬리브리스&p_sex=0, 1">슬리브리스</a></li>
+                                                        <li id="팬츠"><a href="productlist.do?p_sort=의류&p_category=팬츠&p_sex=0, 1">팬츠</a></li>
+                                                        <li id="숏팬츠/타이즈"><a href="productlist.do?p_sort=의류&p_category=숏팬츠/타이즈&p_sex=0, 1">숏팬츠/타이즈</a></li>
+                                                        <li id="기타"><a href="productlist.do?p_sort=의류&p_category=기타&p_sex=0, 1">기타</a></li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h3 class="mega-menu-heading">ACCESSORIES</h3>
+                                                    <ul class="list-unstyled style-list">
+                                                        <li id="양말"><a href="productlist.do?p_sort=용품&p_category=양말&p_sex=0, 1">양말</a></li>
+                                                        <li id="디지털액세서리"><a href="productlist.do?p_sort=용품&p_category=디지털액세서리&p_sex=0, 1">디지털 액세서리</a> <span class="label label-danger-shop">New</span></li>
+                                                        <li id="모자"><a href="productlist.do?p_sort=용품&p_category=모자&p_sex=0, 1">모자</a></li>
+                                                        <li id="가방"><a href="productlist.do?p_sort=용품&p_category=가방&p_sex=0, 1">가방</a></li>
+                                                        <li id="공/피트니스 용품"><a href="productlist.do?p_sort=용품&p_category=공/피트니스 용품&p_sex=0, 1">공/피트니스 용품</a></li>
+                                                        <li id="기타"><a href="productlist.do?p_sort=용품&p_category=기타&p_sex=0, 1">기타</a></li>
+                                                    </ul>
+                                                </div>                                                     
+                                            </div><!--/end row-->
+                                        </div><!--/end container-->
+                                    </div><!--/end mega menu content-->  
+                                </li>
+                            </ul><!--/end dropdown-menu-->
+                        </li>
+                        <!-- End Men -->
+
+                        <!-- Women -->
+                        <c:if test="${param.list == 2 }">   <!-- param 1일때 dropdown 활성 -->
+                        <li class="dropdown mega-menu-fullwidth" id="WOMEN">
+                        </c:if>
+                        <c:if test="${param.list != 2 }">   <!-- param 1이 아닐때 dropdown 비활성 -->
+                        <li class="dropdown mega-menu-fullwidth" id="WOMEN">
+                        </c:if>
+                            <a href="#this" class="dropdown-toggle" data-hover="dropdown" id="WOMEN">
+                                WOMEN
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="mega-menu-content">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h3 class="mega-menu-heading">SHOES</h3>
+                                                    <ul class="list-unstyled style-list">
+                                                  <li id="오리지널스"><a href="productlist.do?p_sort=신발&p_category=오리지널스&p_sex=0, 2">오리지널스</a></li>
+                                                  <li id="러닝"><a href="productlist.do?p_sort=신발&p_category=러닝&p_sex=0, 2">러닝</a></li>
+                                                  <li id="아웃도어"><a href="productlist.do?p_sort=신발&p_category=아웃도어&p_sex=0, 2">아웃도어</a></li>
+                                                  <li id="트레이닝"><a href="productlist.do?p_sort=신발&p_category=트레이닝&p_sex=0, 2">트레이닝</a></li>
+                                                  <li id="야구"><a href="productlist.do?p_sort=신발&p_category=야구&p_sex=0, 2">야구</a></li>
+                                                  <li id="테니스"><a href="productlist.do?p_sort=신발&p_category=테니스&p_sex=0, 2">테니스</a></li>                                                  
+                                                  <li id="스웜"><a href="productlist.do?p_sort=신발&p_category=스웜&p_sex=0, 2">스웜</a></li>   
+                                                    </ul>                                                   
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h3 class="mega-menu-heading">CLOTHES</h3>
+                                                    <ul class="list-unstyled style-list">
+                                                        <li id="브라탑"><a href="productlist.do?p_sort=의류&p_category=브라탑&p_sex=0, 2">브라탑</a></li>
+                                                        <li id="윈터자켓"><a href="productlist.do?p_sort=의류&p_category=윈터자켓&p_sex=0, 2">윈터자켓</a></li>
+                                                        <li id="슬리브리스"><a href="productlist.do?p_sort=의류&p_category=슬리브리스&p_sex=0, 2">슬리브리스</a></li>
+                                                        <li id="반팔티"><a href="productlist.do?p_sort=의류&p_category=반팔티&p_sex=0, 2">반팔티</a></li>
+                                                        <li id="긴팔티"><a href="productlist.do?p_sort=의류&p_category=긴팔티&p_sex=0, 2">긴팔티</a></li>
+                                                        <li id="트랙탑/져지탑"><a href="productlist.do?p_sort=의류&p_category=트랙탑/져지탑&p_sex=0, 2">트랙탑/져지탑</a></li>
+                                                        <li id="자켓"><a href="productlist.do?p_sort=의류&p_category=자켓&p_sex=0, 2">자켓</a></li>
+                                                        <li id="숏팬츠/타이즈"><a href="productlist.do?p_sort=의류&p_category=숏팬츠/타이즈&p_sex=0, 2">숏팬츠/타이즈</a></li>
+                                                        <li id="팬츠"><a href="productlist.do?p_sort=의류&p_category=팬츠&p_sex=0, 2">팬츠</a></li>
+                                                        <li id="스커트/원피스"><a href="productlist.do?p_sort=의류&p_category=스커트/원피스&p_sex=0, 2">스커트/원피스</a></li>
+                                                        <li id="기타"><a href="productlist.do?p_sort=의류&p_category=기타&p_sex=0, 2">기타</a></li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h3 class="mega-menu-heading">ACCESSORIES</h3>
+                                                    <ul class="list-unstyled style-list">
+                                                        <li id="디지털액세서리"><a href="productlist.do?p_sort=용품&p_category=디지털액세서리&p_sex=0, 2">디지털 액세서리</a> <span class="label label-danger-shop">New</span></li>
+                                                        <li id="모자"><a href="productlist.do?p_sort=용품&p_category=모자&p_sex=0, 2">모자</a></li>
+                                                        <li id="가방"><a href="productlist.do?p_sort=용품&p_category=가방&p_sex=0, 2">가방</a></li>
+                                                        <li id="공/피트니스 용품"><a href="productlist.do?p_sort=용품&p_category=공/피트니스 용품&p_sex=0, 2">공/피트니스 용품</a></li>
+                                                        <li id="기타"><a href="productlist.do?p_sort=용품&p_category=기타&p_sex=0, 2">기타</a></li>
+                                                    </ul>
+                                                </div>                                                     
+                                            </div><!--/end row-->
+                                        </div><!--/end container-->
+                                    </div><!--/end mega menu content-->  
+                                </li>
+                            </ul><!--/end dropdown-menu-->
+                        </li>
+                        <!-- End Women -->
+
+                        <!-- Kids -->
+                           <c:if test="${param.list == 3 }">   <!-- param 1일때 dropdown 활성 -->
+                        <li class="dropdown mega-menu-fullwidth" id="KIDS">
+                        </c:if>
+                        <c:if test="${param.list != 3 }">   <!-- param 1이 아닐때 dropdown 비활성 -->
+                        <li class="dropdown mega-menu-fullwidth" id="KIDS">
+                        </c:if>
+                            <a href="#this" class="dropdown-toggle" data-hover="dropdown" id="KIDS">
+                                KIDS
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="mega-menu-content">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h3 class="mega-menu-heading">SHOES</h3>
+                                                    <ul class="list-unstyled style-list">
+                                                  <li id="오리지널스"><a href="productlist.do?p_sort=신발&p_category=오리지널스&p_sex=3">오리지널스</a></li>
+                                                  <li id="트레이닝"><a href="productlist.do?p_sort=신발&p_category=트레이닝&p_sex=3">트레이닝</a></li>
+                                                  <li id="스웜"><a href="productlist.do?p_sort=신발&p_category=스웜&p_sex=3">스웜</a></li>   
+                                                  <li id="축구"><a href="productlist.do?p_sort=신발&p_category=축구&p_sex=3">축구</a></li>                                                  
+                                                  <li id="러닝"><a href="productlist.do?p_sort=신발&p_category=러닝&p_sex=3">러닝</a></li>
+                                                  <li id="농구"><a href="productlist.do?p_sort=신발&p_category=농구&p_sex=3">농구</a></li>
+                                                  <li id="아웃도어"><a href="productlist.do?p_sort=신발&p_category=아웃도어&p_sex=3">아웃도어</a></li>
+                                                    </ul>                                                   
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h3 class="mega-menu-heading">CLOTHES</h3>
+                                                    <ul class="list-unstyled style-list">
+                                                        <li id="티셔츠"><a href="productlist.do?p_sort=의류&p_category=티셔츠&p_sex=3">티셔츠</a></li>
+                                                        <li id="팬츠"><a href="productlist.do?p_sort=의류&p_category=팬츠&p_sex=3">팬츠</a></li>
+                                                        <li id="상하의세트"><a href="productlist.do?p_sort=의류&p_category=상하의세트&p_sex=3">상하의세트</a></li>
+                                                        <li id="기타"><a href="productlist.do?p_sort=의류&p_category=기타&p_sex=3">기타</a></li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h3 class="mega-menu-heading">ACCESSORIES</h3>
+                                                    <ul class="list-unstyled style-list">
+                                                        <li id="모자"><a href="productlist.do?p_sort=용품&p_category=모자&p_sex=3">모자</a> <span class="label label-danger-shop">New</span></li>
+                                                        <li id="가방"><a href="productlist.do?p_sort=용품&p_category=가방&p_sex=3">가방</a></li>
+                                                    </ul>
+                                                </div>                                                     
+                                            </div><!--/end row-->
+                                        </div><!--/end container-->
+                                    </div><!--/end mega menu content-->  
+                                </li>
+                            </ul><!--/end dropdown-menu-->
+                        </li>
+                        <!-- End Kids -->
+						<!-- Clothes -->
+                        <li class="dropdown mega-menu-fullwidth"> 
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" data-delay="1000">
+                                Promotion 
+                            </a>
+                            <ul class="dropdown-menu">
+                               <div class="mega-menu-content">
+                                   <div class="container">
+                                       <div class="row">
+                                           <div class="col-md-3 col-sm-12 offset-col-md-1 col-sm-1 md-margin-bottom-30">
+                                               <h3 class="mega-menu-heading">프로모션</h3>
+                                               <p>진행중인 프로모션을 확인해보세요!</p>
+                                               <button type="button" class="btn-u btn-u-dark" onclick="alert('점검중입니다.')">Read More</button>
+                                           </div>
+                                           <div class="col-md-3 col-sm-4 col-xs-4 md-margin-bottom-30">
+                                               <a href="#"><img class="product-offers img-responsive" src="assets/img/blog/01.jpg" alt=""></a>
+                                           </div>
+                                           <div class="col-md-3 col-sm-4 col-xs-4 sm-margin-bottom-30">
+                                               <a href="#"><img class="product-offers img-responsive" src="assets/img/blog/02.jpg" alt=""></a>
+                                           </div>
+                                           <div class="col-md-3 col-sm-4 col-xs-4">
+                                               <a href="#"><img class="product-offers img-responsive" src="assets/img/blog/03.jpg" alt=""></a>
+                                           </div>
+                                       </div><!--/end row-->
+                                   </div><!--/end container-->
+                               </div><!--/end mega menu content-->  
+                            </ul>
+                        </li>
+                        <!-- End Clothes -->
+                        
+                        <!-- Books -->
+                        <li class="dropdown mega-menu-fullwidth">   
+                        <li class="dropdown" id="QnA">
+                            <a href="#this" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" id="QnA">
+                                	QNA
+                            </a>
+                        </li>
+                        <!-- End Pages -->
+                        </li>
+                        <!-- End Books -->
+
+                        <!-- Clothes -->
+                        <li class="dropdown mega-menu-fullwidth">   
+                        <li class="dropdown" id="MyPage">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">
+                                MY PAGE
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="my_info.do">내 정보</a></li>
+                                <li><a href="my_history.do">구매목록</a></li>
+                                <li><a href="my_QnA.do">QNA 답변 확인</a></li>
+                            </ul>
+                        </li>
+                        <!-- End Pages -->
+                        </li>
+                        <!-- End Books -->
+                    </ul>
+                    <!-- End Nav Menu -->
+                </div>
+            </div>    
+        </div>            
+        <!-- End Navbar -->
+    </div>
+    <!--=== End Header v5 ===-->
+    
+    
+<!-- JS Global Compulsory -->
+<script src="assets/plugins/jquery/jquery.min.js"></script>
+<script src="assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    
+</body>
+</html>
