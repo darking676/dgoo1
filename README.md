@@ -18,9 +18,18 @@
 ### \#footer 부분<br/>
 <img src='img/img3.png' /><p/>
 
-## <strong>상품분류 화면</strong><br />
+## <strong>상품 화면</strong><br />
+### \#상품분류 화면
 <img src='img/productlist.png' /><p/>
 \#이부분은 크게 썸네일, 필터가 있는데 필터를 누를때마다 쿼리를 날려 해당 분류에 맞는 제품을 보여주고 
   &nbsp;썸네일 부분은 이미지를 누르면 상세보기, 마우스를 over하면 이미지 중간부분에 카트에 add할수있는 버튼기능을 붙였다. <br />
-  기능구현에 들어간 기술은 HTML, javascript, jQUERY, Bootstrap이다.
-
+  기능구현에 들어간 기술은 HTML, javascript, jQUERY, Bootstrap이다. <p />
+### \#카트 화면
+<img src='img/cart.png' /><br/>
+\#썸네일에서 상품을 카트에 담는 기능은 세션처리를 했다.<br /> 
+카트가 비어있으면 hashmap에 차곡차곡 담고 이미 카트에있던 상품을 중복으로 담을시엔<br />
+세션 확인 후 이미 생성된 값이면 수량만 + 해주는 식으로 만들었다 ! <br />
+Ajax로 해당 카트 클래스 호출하여 처리하고 해당페이지 reload 하는식으로 했더니 잘 구현됐다. <br />
+지우는 것 역시 마찬가지로 jQUERY로 해당 index 추적하여 세션삭제해주고 페이지 reload해주었다. <br />
+subtotal 가격변동은 jQUERY로 해당 index에 price,quantity 값 조회하여 +- 따른 변동값 출력하게끔 설계했다. <br />
+페이지가 reload되면서 헤더쪽에 카트에 +- 상품의 수만큼 숫자 refresh 등 하다보니 생각보다 신경쓸게 많았다..<p />
