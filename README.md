@@ -11,9 +11,12 @@
 용이하겠구나 생각했다. <br /> 
 그래서 기반이 되는 쇼핑몰 먼저 구축을 하였다. 
 ## <strong>메인화면</strong> <br />
-### header, gnb, visual 부분
+### \#header, gnb, visual 부분
 <img src='img/img1.png' /><br/>
-### contents 부분<br/>
+### \#contents 부분<br/>
 <img src='img/img2.png' /><br/>
-### footer 부분<br/>
+### \#footer 부분<br/>
 <img src='img/img3.png' /><p/>
+
+### \#상품분류 페이지<br />
+<img src=''
