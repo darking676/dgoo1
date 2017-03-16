@@ -12,8 +12,8 @@
 그래서 기반이 되는 쇼핑몰 먼저 구축을 하였다. 
 ## <strong>메인화면</strong> <br />
 ### header, gnb, visual 부분
-<img src='img/img1.png' />
-### contents 부분
-<img src='img/img2.png' />
-### footer 부분
-<img src='img/img3.png' />
+<img src='img/img1.png' /><br/>
+### contents 부분<br/>
+<img src='img/img2.png' /><br/>
+### footer 부분<br/>
+<img src='img/img3.png' /><p/>
