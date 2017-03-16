@@ -110,7 +110,6 @@ public class PaymentController {
 					}
 				}
 			if(b == false){
-				System.out.println("여기 안와?");
 				mv.addObject("list", list2);
 				mv.setViewName("errors/error");					
 			}else{
